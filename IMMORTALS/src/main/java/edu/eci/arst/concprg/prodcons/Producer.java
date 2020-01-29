@@ -38,7 +38,9 @@ public class Producer extends Thread {
             System.out.println("Producer added " + dataSeed);
             synchronized(mutex){
                 queue.add(dataSeed);
-                mutex.notify();
+                if (queue.size() == stockLimit) {
+                	mutex.notify();
+                }                
             }       
             try {
                 Thread.sleep(1000);
