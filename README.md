@@ -1,5 +1,12 @@
 # ARSW-LAB2
 
+## Members 
+- **Juan Alberto Mejía Schuster**
+- **Johann Sebastian Páez Campos**
+
+## Compile and run instructions
+
+
 ## Part I - Before finishing class
 
 _Thread control with wait/notify. Producer/consumer_
