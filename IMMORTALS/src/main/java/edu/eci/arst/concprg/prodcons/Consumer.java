@@ -11,24 +11,33 @@ import java.util.Queue;
  *
  * @author hcadavid
  */
-public class Consumer extends Thread{
-    
-    private Queue<Integer> queue;
-    
-    
-    public Consumer(Queue<Integer> queue){
-        this.queue=queue;        
-    }
-    
-    @Override
-    public void run() {
-        while (true) {
+public class Consumer extends Thread {
 
-            if (queue.size() > 0) {
-                int elem=queue.poll();
-                System.out.println("Consumer consumes "+elem);                                
-            }
-            
-        }
-    }
+	private Queue<Integer> queue;
+	private Object mutex = null;
+
+	public Consumer(Queue<Integer> queue, Object mutex) {
+		this.queue = queue;
+		this.mutex = mutex;
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			synchronized (mutex) {
+				while (queue.isEmpty()) {
+					try {
+						mutex.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				int elem = queue.poll();
+				System.out.println("Consumer consumes " + elem);
+
+			}
+
+		}
+	}
 }

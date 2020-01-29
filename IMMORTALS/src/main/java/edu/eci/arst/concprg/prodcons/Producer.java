@@ -1,5 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -17,13 +17,16 @@ import java.util.logging.Logger;
 public class Producer extends Thread {
 
     private Queue<Integer> queue = null;
+    private Object mutex = null;
+    
 
     private int dataSeed = 0;
     private Random rand=null;
     private final long stockLimit;
 
-    public Producer(Queue<Integer> queue,long stockLimit) {
+    public Producer(Queue<Integer> queue,long stockLimit,Object mutex) {
         this.queue = queue;
+        this.mutex=mutex;
         rand = new Random(System.currentTimeMillis());
         this.stockLimit=stockLimit;
     }
@@ -31,11 +34,12 @@ public class Producer extends Thread {
     @Override
     public void run() {
         while (true) {
-
             dataSeed = dataSeed + rand.nextInt(100);
             System.out.println("Producer added " + dataSeed);
-            queue.add(dataSeed);
-            
+            synchronized(mutex){
+                queue.add(dataSeed);
+                mutex.notify();
+            }       
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
