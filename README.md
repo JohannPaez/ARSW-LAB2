@@ -6,6 +6,14 @@
 
 ## Compile and run instructions
 
+To compile: ```mvn package```
+
+To run StartProduction: ```mvn exec:java -Dexec.mainClass="edu.eci.arst.concprg.prodcons.StartProduction" ```
+
+To run ControlFrame (Immortals): ```mvn exec:java -Dexec.mainClass="edu.eci.arsw.highlandersim.ControlFrame" ```
+
+To run test: ``` mvn test```
+
 
 ## Part I - Before finishing class
 
@@ -47,7 +55,7 @@ _Synchronization and Dead-Locks._
   
 2. Review the code and identify how the functionality indicated above was implemented. Given the intention of the game, an invariant should be that the sum of the life points of all players is always the same (of course, in an instant of time in which a time increase / reduction operation is not in process ). For this case, for N players, what should this value be?
 
-For this case the value should be N * DEFAULT_IMMORTAL_HEALTH
+For this case the value should be ```N * DEFAULT_IMMORTAL_HEALTH```
 
 3. Run the application and verify how the ‘pause and check’ option works. Is the invariant fulfilled?
 
