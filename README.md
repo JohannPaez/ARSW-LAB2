@@ -47,17 +47,35 @@ _Synchronization and Dead-Locks._
   
 2. Review the code and identify how the functionality indicated above was implemented. Given the intention of the game, an invariant should be that the sum of the life points of all players is always the same (of course, in an instant of time in which a time increase / reduction operation is not in process ). For this case, for N players, what should this value be?
 
+For this case the value should be N * DEFAULT_IMMORTAL_HEALTH
+
 3. Run the application and verify how the ‘pause and check’ option works. Is the invariant fulfilled?
+
+At this point the invariant is not fulfilled, the total health changes each time we press the ‘pause and check’
 
 4. A first hypothesis that the race condition for this function (pause and check) is presented is that the program consults the list whose values ​​it will print, while other threads modify their values. To correct this, do whatever is necessary so that, before printing the current results, all other threads are paused. Additionally, implement the ‘resume’ option.
 
+We implemented a mutex, to lock the list and avoid the modification of the values while the program reads  
+
 5. Check the operation again (click the button many times). Is the invariant fulfilled or not ?.
+
+No, the invariant is not fulfilled.
 
 6. Identify possible critical regions in regards to the fight of the immortals. Implement a blocking strategy that avoids race conditions. Remember that if you need to use two or more ‘locks’ simultaneously, you can use nested synchronized blocks.
 
+The method fight in the Immortal class is a critical region, we implemented the following to avoid race conditions
+
+![](https://github.com/JohannPaez/ARSW-LAB2/blob/master/img/Fight-Inmortals.PNG)
+
 7. After implementing your strategy, start running your program, and pay attention to whether it comes to a halt. If so, use the jps and jstack programs to identify why the program stopped.
 
+We checked with jstack and found a deadlock
+
 8. Consider a strategy to correct the problem identified above (you can review Chapter 15 of Java Concurrency in Practice again).
+
+To avoid the deadlock we synchronized the inmortals from the start 
+
+![](https://github.com/JohannPaez/ARSW-LAB2/blob/master/img/Start.PNG)
 
 9. Once the problem is corrected, rectify that the program continues to function consistently when 100, 1000 or 10000 immortals are executed. If in these large cases the invariant begins to be breached again, you must analyze what was done in step 4.
 
@@ -68,3 +86,5 @@ _Synchronization and Dead-Locks._
     2. Correct the previous problem WITHOUT using synchronization, since making access to the shared list of immortals sequential would make simulation extremely slow. 
     
 11. To finish, implement the STOP option.
+
+![](https://github.com/JohannPaez/ARSW-LAB2/blob/master/img/Stop.PNG)
