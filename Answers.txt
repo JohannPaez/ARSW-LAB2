@@ -1,0 +1,2 @@
+When removing the dying Immortals from the list, it should be noted that it is possible that more than one thread will attempt to remove the same Immortal and this may cause an exception.
+This problem is due to having to manipulate the list of Immortals and this can cause a race condition.
