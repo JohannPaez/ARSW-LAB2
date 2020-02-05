@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -71,14 +72,12 @@ public class ControlFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	
                 immortals = setupInmortals();
-                
-                synchronized(immortals) {                 
-	                if (immortals != null) {
-	                    for (Immortal im : immortals) {
-	                        im.start();
-	                    }
-	                } 
-                }
+                                               
+                if (immortals != null) {
+                    for (Immortal im : immortals) {
+                        im.start();
+                    }
+                }                
 
                 btnStart.setEnabled(false);
 
@@ -95,12 +94,13 @@ public class ControlFrame extends JFrame {
                  */ 
                 
                 int sum = 0;
-            	synchronized(this) {
-	                for (Immortal im : immortals) im.pause();
-	                for (Immortal im : immortals) {
-	                    sum += im.getHealth();
-	                }
-            	}
+                for (Immortal im : immortals) {
+                	im.pause();
+                }
+                
+                for (Immortal im : immortals) {
+                    sum += im.getHealth();
+                }
 
                 statisticsLabel.setText("<html>"+immortals.toString()+"<br>Health sum:"+ sum);
                 
@@ -117,7 +117,9 @@ public class ControlFrame extends JFrame {
                 /**
                  * IMPLEMENTAR
                  */
-            	 for (Immortal im : immortals) im.renaudar();
+            	 for (Immortal im : immortals) {
+            		 im.renaudar();
+            	 }
 
             }
         });
@@ -166,7 +168,8 @@ public class ControlFrame extends JFrame {
         try {
             int ni = Integer.parseInt(numOfImmortals.getText());
 
-            List<Immortal> il = new LinkedList<Immortal>();
+            List<Immortal> il = new CopyOnWriteArrayList<Immortal>();
+            
 
             for (int i = 0; i < ni; i++) {
                 Immortal i1 = new Immortal("im" + i, il, DEFAULT_IMMORTAL_HEALTH, DEFAULT_DAMAGE_VALUE,ucb);
